@@ -160,3 +160,7 @@ Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://tw
 Second part of Airbnb: Joann Vuong
 ## License
 Public Domain. No copy write protection. 
+
+Holberton-AirBnb_clone_v3 part by:
+Guillermo Vega - [Github](https://github.com/Korchea) / [Instagram](https://www.instagram.com/guilllermo.vega/)
+Luisina Llugdar - [Github](https://github.com/LuisinaLlugdar) / ....
