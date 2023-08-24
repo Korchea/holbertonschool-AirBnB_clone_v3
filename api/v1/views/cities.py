@@ -4,7 +4,6 @@ RESTFul API actions """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.city import City
-from models.state import State
 from models import storage
 
 
@@ -72,7 +71,7 @@ def update_city(city_id):
     """
         update existing city object
     """
-    obj = storage.get(State, "City", city_id)
+    obj = storage.get("City", city_id)
     if obj is None:
         abort(404)
     body_request = request.get_json()
