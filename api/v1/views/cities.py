@@ -14,7 +14,8 @@ def get_city_by_state(state_id):
     """
         Returns Cities in a State
     """
-    state = storage.get(State, state_id) # State was a str it needs to be a class
+    state = storage.get(State, state_id)
+    """State was a str it needs to be a class"""
     if state is None:
         abort(404)
     list_of_cities = []
@@ -56,14 +57,16 @@ def create_city(state_id):
         abort(400, "Not a JSON")
     if "name" not in obj_data:
         abort(400, "Missing name")
-    state = storage.get(State, state_id) # State was a str it needs to be a class
+    state = storage.get(State, state_id)
+    """State was a str it needs to be a class"""
     if state is None:
         abort(404)
     obj_data['state_id'] = state.id
     obj = City(**obj_data)
     storage.new(obj)
     storage.save()
-    return jsonify(obj.to_dict()), 201 # I move some things to have less lines and short lines
+    return jsonify(obj.to_dict()), 201
+"""I move some things to have less lines and short lines"""
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
