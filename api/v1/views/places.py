@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" A new view for City objects that handles all default
+""" A new view for Place objects that handles all default
 RESTFul API actions """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
