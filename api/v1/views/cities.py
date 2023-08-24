@@ -13,7 +13,7 @@ def get_city_by_state(state_id):
     """
         Returns Cities in a State
     """
-    state = storage.get("State/<state_id>/cities", state_id)
+    state = storage.get("State", state_id)
     if state is None:
         abort(404)
     list_of_cities = []
@@ -27,7 +27,7 @@ def get_city_id(city_id):
     """
         Returns the city with the specified id
     """
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
     return jsonify(city.to_dict()), 200
@@ -38,7 +38,7 @@ def delete_city(city_id):
     """
         Deletes a city obj given its id
     """
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
     city.delete()
@@ -71,7 +71,7 @@ def update_city(city_id):
     """
         update existing city object
     """
-    obj = storage.get("City", city_id)
+    obj = storage.get(City, city_id)
     if obj is None:
         abort(404)
     body_request = request.get_json()
