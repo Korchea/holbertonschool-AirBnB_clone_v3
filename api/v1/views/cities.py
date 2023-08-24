@@ -4,6 +4,7 @@ RESTFul API actions """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.city import City
+from models.state import State
 from models import storage
 
 
@@ -13,7 +14,7 @@ def get_city_by_state(state_id):
     """
         Returns Cities in a State
     """
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id) # State was a str it needs to be a class
     if state is None:
         abort(404)
     list_of_cities = []
@@ -50,20 +51,19 @@ def delete_city(city_id):
                  strict_slashes=False)
 def create_city(state_id):
     """ create new city obj """
-    if not request.get_json():
+    obj_data = request.get_json()
+    if not obj_data:
         abort(400, "Not a JSON")
-    elif "name" not in request.get_json():
+    if "name" not in obj_data:
         abort(400, "Missing name")
-    else:
-        obj_data = request.get_json()
-        state = storage.get("State", state_id)
-        if state is None:
-            abort(404)
-        obj_data['state_id'] = state.id
-        obj = City(**obj_data)
-        storage.new(obj)
-        storage.save()
-        return jsonify(obj.to_dict()), 201
+    state = storage.get(State, state_id) # State was a str it needs to be a class
+    if state is None:
+        abort(404)
+    obj_data['state_id'] = state.id
+    obj = City(**obj_data)
+    storage.new(obj)
+    storage.save()
+    return jsonify(obj.to_dict()), 201 # I move some things to have less lines and short lines
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
