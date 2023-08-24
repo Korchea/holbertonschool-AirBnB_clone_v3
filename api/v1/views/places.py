@@ -35,7 +35,8 @@ def get_place_id(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_place(place_id):
     """
         Deletes a place obj given its id
@@ -52,6 +53,9 @@ def delete_place(place_id):
                  strict_slashes=False)
 def create_place(city_id):
     """ create new place obj """
+    city = storage.get(City, city_id)
+    if city is None:
+        abort(404)
     obj_data = request.get_json()
     if not obj_data:
         abort(400, "Not a JSON")
@@ -59,9 +63,6 @@ def create_place(city_id):
         abort(400, "Missing user_id")
     user_id = obj_data['user_id']
     if not storage.get(User, user_id):
-        abort(400, "Missing user_id")
-    city = storage.get(City, city_id)
-    if city is None:
         abort(404)
     if "name" not in obj_data:
         abort(400, "Missing name")
