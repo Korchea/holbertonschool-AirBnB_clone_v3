@@ -67,7 +67,8 @@ def update_user(user_id):
     if not body_request:
         abort(400, "Not a JSON")
     for key, value in body_request.items():
-        if key != 'id' and key != 'email' and key != 'created_at' and key != 'updated_at':
+        if key != 'id' and key != 'email' and \
+            key != 'created_at' and key != 'updated_at':
             setattr(user, key, value)
     storage.save()
     return jsonify(user.to_dict()), 200
