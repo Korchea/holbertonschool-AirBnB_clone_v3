@@ -63,4 +63,4 @@ def update_state(state_id):
     for key, value in body_request:
         if key != 'id' and key != 'created_at' and key != 'updated_at':
             setattr(state, key, value)
-    return jsonify(state.to_dict())
+    return jsonify(state.to_dict()), 200
