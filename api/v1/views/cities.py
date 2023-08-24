@@ -14,7 +14,7 @@ def get_city_by_state(state_id):
     """
         Returns Cities in a State
     """
-    state = storage.get("State", state_id)
+    state = storage.get("State/<state_id>/cities", state_id)
     if state is None:
         abort(404)
     list_of_cities = []
@@ -52,9 +52,9 @@ def delete_city(city_id):
 def create_city(state_id):
     """ create new city obj """
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        abort(400, "Not a JSON")
     elif "name" not in request.get_json():
-        return jsonify({"error": "Missing name"}), 400
+        abort(400, "Missing name")
     else:
         obj_data = request.get_json()
         state = storage.get("State", state_id)
@@ -62,7 +62,8 @@ def create_city(state_id):
             abort(404)
         obj_data['state_id'] = state.id
         obj = City(**obj_data)
-        obj.save()
+        storage.new(obj)
+        storage.save()
         return jsonify(obj.to_dict()), 201
 
 
@@ -71,13 +72,14 @@ def update_city(city_id):
     """
         update existing city object
     """
-    if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
-
-    obj = storage.get("City", city_id)
+    obj = storage.get(State, "City", city_id)
     if obj is None:
         abort(404)
-    obj_data = request.get_json()
-    obj.name = obj_data['name']
-    obj.save()
+    body_request = request.get_json()
+    if not body_request:
+        abort(400, "Not a JSON")
+    for key, value in body_request.items():
+        if key != 'id' and key != 'created_at' and key != 'updated_at':
+            setattr(obj, key, value)
+    storage.save()
     return jsonify(obj.to_dict()), 200
