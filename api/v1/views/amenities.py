@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" A new view for State objects that handles all default
+""" A new view for Amenity objects that handles all default
 RESTFul API actions"""
 from models.amenity import Amenity
 from api.v1.views import app_views
@@ -11,13 +11,13 @@ from models import storage
 def get_all_amenities():
     """ Return all the amenities"""
     amenities = storage.all(Amenity)
-    list_states = []
+    list_amenities = []
     for amenity in amenities:
-        list_states.append(amenities[amenity].to_dict())
-    return jsonify(list_states)
+        list_amenities.append(amenities[amenity].to_dict())
+    return jsonify(list_amenities)
 
 
-@app_views.route('amenities/<amenity_id>', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity_by_id(amenity_id):
     """ Return a specific amenity"""
