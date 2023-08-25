@@ -86,3 +86,36 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+
+class TestDBStorage(unittest.TestCase):
+    """Test the DBStorage class"""
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
+    def reload_db(self):
+        """ Reload when starting DBStorage """
+        self.db_storage = DBStorage()
+        self.db_storage.reload()
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
+    def close_db(self):
+        """ Close the current DBStorage session """
+        self.db_storage.close()
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
+    def test_get_method(self):
+        """ Test get() method """
+        new_state = State(name="Ohio")
+        self.db_storage.new(new_state)
+        self.db_storage.save()
+        get_state = self.db_storage.get(State, new_state.id)
+        self.assertEqual(get_state, new_state)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
+    def test_count_method(self):
+        """ Test count() method """
+        initial_num = self.db_storage.count(State)
+        new_state = State(name="Alaska")
+        self.db_storage.new(new_state)
+        self.db_storage.save()
+        updated_num = self.db_storage.count(State)
+        self.assertEqual(updated_num, initial_num + 1)
